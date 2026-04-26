@@ -1,0 +1,986 @@
+!DOCT<YPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DirectLink – Expert Guidance, Instantly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0a1628;
+      --navy-mid: #112240;
+      --teal: #0db4b9;
+      --teal-light: #5eead4;
+      --gold: #f5c842;
+      --cream: #f7f3ec;
+      --white: #ffffff;
+      --text-muted: #8b9bb4;
+      --card-bg: #0f1f3d;
+      --border: rgba(13,180,185,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--teal);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transition: transform 0.15s ease;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--teal);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      opacity: 0.5;
+      transition: transform 0.3s ease, width 0.2s, height 0.2s;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5%;
+      background: rgba(10,22,40,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem; font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .logo-text span { color: var(--teal); }
+
+    nav ul {
+      list-style: none;
+      display: flex; gap: 2.2rem;
+    }
+    nav ul a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem; font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--teal); }
+
+    .nav-cta {
+      background: var(--teal);
+      color: var(--navy) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 100px;
+      font-weight: 600 !important;
+      color: var(--navy);
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--teal-light) !important; transform: translateY(-1px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: 0.3s; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 5% 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(13,180,185,0.13) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 80%, rgba(245,200,66,0.07) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(13,180,185,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13,180,185,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(13,180,185,0.12);
+      border: 1px solid rgba(13,180,185,0.3);
+      border-radius: 100px;
+      padding: 0.38rem 1.1rem;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--teal); letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.7s ease both;
+    }
+    .badge-dot { width: 7px; height: 7px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 900; line-height: 1.1;
+      max-width: 820px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero h1 em { color: var(--teal); font-style: normal; }
+    .hero h1 .underline-gold { color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 1.4rem;
+      font-size: 1.08rem; color: var(--text-muted);
+      max-width: 560px; line-height: 1.75;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-btns {
+      margin-top: 2.4rem;
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: var(--navy);
+      padding: 0.85rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 700; font-size: 0.95rem;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(13,180,185,0.3);
+    }
+    .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 0 44px rgba(13,180,185,0.45); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 0.85rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem; font-weight: 900; color: var(--white);
+    }
+    .stat-num span { color: var(--teal); }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      background: rgba(13,180,185,0.04);
+    }
+    .marquee-track {
+      display: flex; gap: 3rem;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.08em; white-space: nowrap;
+    }
+    .marquee-item svg { color: var(--teal); flex-shrink: 0; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── SECTION STYLES ── */
+    section { padding: 6rem 5%; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--teal); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 0.9rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+      font-weight: 900; line-height: 1.15;
+    }
+    .section-sub {
+      color: var(--text-muted); font-size: 1rem;
+      line-height: 1.75; max-width: 520px; margin-top: 0.8rem;
+    }
+    .section-head { margin-bottom: 3.5rem; }
+
+    /* ── EXPERTS GRID ── */
+    #experts { background: var(--navy-mid); }
+    .experts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+    .expert-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .expert-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .expert-card:hover { transform: translateY(-7px); border-color: var(--teal); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .expert-card:hover::before { opacity: 1; }
+    .expert-icon {
+      width: 68px; height: 68px;
+      background: rgba(13,180,185,0.12);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 2rem;
+      transition: background 0.25s;
+    }
+    .expert-card:hover .expert-icon { background: rgba(13,180,185,0.22); }
+    .expert-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;
+    }
+    .expert-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+    .expert-tag {
+      display: inline-block; margin-top: 1rem;
+      background: rgba(13,180,185,0.1);
+      border: 1px solid rgba(13,180,185,0.2);
+      border-radius: 100px;
+      padding: 0.25rem 0.85rem;
+      font-size: 0.72rem; color: var(--teal); font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #how { position: relative; }
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      position: relative;
+    }
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem; font-weight: 900;
+      color: rgba(13,180,185,0.12);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .step-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .step-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--navy-mid); }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .testi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+    }
+    .stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; }
+    .testi-text { font-size: 0.9rem; color: #c8d4e8; line-height: 1.75; margin-bottom: 1.5rem; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 0.9rem; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--navy-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem; color: var(--navy);
+    }
+    .testi-name { font-weight: 700; font-size: 0.9rem; }
+    .testi-role { font-size: 0.77rem; color: var(--text-muted); }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px; margin: 0 auto;
+    }
+    .price-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 2.2rem;
+      position: relative; overflow: hidden;
+    }
+    .price-card.popular {
+      border-color: var(--teal);
+      box-shadow: 0 0 40px rgba(13,180,185,0.15);
+    }
+    .popular-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: var(--teal); color: var(--navy);
+      font-size: 0.7rem; font-weight: 800;
+      padding: 0.22rem 0.75rem; border-radius: 100px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .price-plan { font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+    .price-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem; font-weight: 900; margin-bottom: 0.2rem;
+    }
+    .price-period { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.6rem; }
+    .price-features { list-style: none; margin-bottom: 2rem; }
+    .price-features li {
+      display: flex; align-items: center; gap: 0.65rem;
+      font-size: 0.88rem; color: #c8d4e8;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .price-features li::before { content: '✓'; color: var(--teal); font-weight: 800; font-size: 0.9rem; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--navy-mid); }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .contact-info p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.8; margin-bottom: 2rem; }
+    .contact-detail {
+      display: flex; align-items: center; gap: 0.9rem;
+      margin-bottom: 1rem; font-size: 0.88rem;
+    }
+    .contact-detail-icon {
+      width: 38px; height: 38px;
+      background: rgba(13,180,185,0.12);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 2.5rem;
+    }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.45rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.78rem 1rem;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--teal); background: rgba(13,180,185,0.06); }
+    .form-group select option { background: var(--navy-mid); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070f1f;
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 5% 2rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-brand p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.75; margin-top: 1rem; max-width: 240px; }
+    .footer-col h4 { font-weight: 700; font-size: 0.88rem; margin-bottom: 1.2rem; letter-spacing: 0.05em; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.65rem; }
+    .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--teal); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { color: var(--text-muted); font-size: 0.8rem; }
+    .social-links { display: flex; gap: 0.7rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .social-btn:hover { background: rgba(13,180,185,0.15); color: var(--teal); border-color: var(--teal); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+      background: var(--teal); color: var(--navy);
+      padding: 1rem 1.6rem; border-radius: 14px;
+      font-weight: 700; font-size: 0.9rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s ease;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── MOBILE NAV ── */
+    .mobile-nav {
+      display: none;
+      position: fixed; inset: 0; z-index: 99;
+      background: var(--navy);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: var(--white); text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700;
+      transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--teal); }
+    .close-btn {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; color: var(--white);
+      font-size: 2rem; cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .contact-wrap { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      nav ul, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Toast -->
+<div id="toast">✓ Message sent! We'll contact you shortly.</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="logo">
+    <!-- SVG Logo -->
+    <div class="logo-icon">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="42" height="42" rx="12" fill="#0db4b9" fill-opacity="0.15"/>
+        <circle cx="21" cy="21" r="10" stroke="#0db4b9" stroke-width="2"/>
+        <path d="M16 21 L21 16 L26 21" stroke="#0db4b9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 16 L21 27" stroke="#0db4b9" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="21" cy="21" r="3" fill="#0db4b9"/>
+        <path d="M14 28 L28 14" stroke="#f5c842" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+    </div>
+    <span class="logo-text">Direct<span>Link</span></span>
+  </a>
+  <ul>
+    <li><a href="#experts">Experts</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="openMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" onclick="closeMenu()">✕</button>
+  <a href="#experts" onclick="closeMenu()">Experts</a>
+  <a href="#how" onclick="closeMenu()">How It Works</a>
+  <a href="#testimonials" onclick="closeMenu()">Reviews</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Trusted by 50,000+ Professionals Worldwide
+  </div>
+
+  <h1>
+    Expert Guidance,<br>
+    <em>Directly</em> to <span class="underline-gold">You</span>
+  </h1>
+  <p class="hero-sub">
+    Connect instantly with verified doctors, lawyers, engineers, financial advisors, educators, and more — all in one powerful platform.
+  </p>
+  <div class="hero-btns">
+    <a href="#experts" class="btn-primary">Explore Experts</a>
+    <a href="#how" class="btn-outline">See How It Works</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">12K<span>+</span></div>
+      <div class="stat-label">Verified Experts</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98<span>%</span></div>
+      <div class="stat-label">Satisfaction Rate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50K<span>+</span></div>
+      <div class="stat-label">Sessions Completed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">24<span>/7</span></div>
+      <div class="stat-label">Always Available</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Medical Consultations</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Legal Advice</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Financial Planning</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Career Coaching</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Engineering Support</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Academic Tutoring</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Business Strategy</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Mental Wellness</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Medical Consultations</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Legal Advice</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Financial Planning</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Career Coaching</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Engineering Support</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Academic Tutoring</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Business Strategy</div>
+    <div class="marquee-item"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8"/></svg>Mental Wellness</div>
+  </div>
+</div>
+
+<!-- EXPERTS SECTION -->
+<section id="experts">
+  <div class="section-head reveal">
+    <span class="section-label">Expert Categories</span>
+    <h2 class="section-title">Find the Right Expert<br>for Every Need</h2>
+    <p class="section-sub">From healthcare to law, academics to finance — our verified professionals are ready to guide you.</p>
+  </div>
+  <div class="experts-grid">
+    <div class="expert-card reveal">
+      <div class="expert-icon">🩺</div>
+      <div class="expert-name">Medical Doctors</div>
+      <p class="expert-desc">General physicians, specialists & surgeons for health consultations and second opinions.</p>
+      <span class="expert-tag">Healthcare</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">⚖️</div>
+      <div class="expert-name">Lawyers</div>
+      <p class="expert-desc">Civil, criminal, corporate & family law experts for legal guidance and documentation.</p>
+      <span class="expert-tag">Legal</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">🎓</div>
+      <div class="expert-name">Educators</div>
+      <p class="expert-desc">University professors and certified tutors for students at all academic levels.</p>
+      <span class="expert-tag">Education</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">💰</div>
+      <div class="expert-name">Financial Advisors</div>
+      <p class="expert-desc">Investment planning, tax advice, budgeting, and wealth management guidance.</p>
+      <span class="expert-tag">Finance</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">🏗️</div>
+      <div class="expert-name">Engineers</div>
+      <p class="expert-desc">Civil, software, mechanical and electrical engineers for technical problem-solving.</p>
+      <span class="expert-tag">Engineering</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">🧠</div>
+      <div class="expert-name">Psychologists</div>
+      <p class="expert-desc">Licensed therapists and counselors for mental wellness and emotional support.</p>
+      <span class="expert-tag">Mental Health</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">📈</div>
+      <div class="expert-name">Business Consultants</div>
+      <p class="expert-desc">Startup strategy, market analysis, growth hacking and business planning experts.</p>
+      <span class="expert-tag">Business</span>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-icon">💻</div>
+      <div class="expert-name">IT & Tech Experts</div>
+      <p class="expert-desc">Cybersecurity, cloud computing, software development and tech support professionals.</p>
+      <span class="expert-tag">Technology</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background: var(--navy-mid);">
+  <div class="section-head reveal" style="text-align:center; max-width:600px; margin:0 auto 3.5rem;">
+    <span class="section-label">The Process</span>
+    <h2 class="section-title">Three Simple Steps to Expert Help</h2>
+    <p class="section-sub" style="margin:0 auto;">Getting professional guidance has never been this easy or this fast.</p>
+  </div>
+  <div class="steps-row">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Choose Your Category</div>
+      <p class="step-desc">Browse our 20+ expert categories and select the professional field that matches your need — medical, legal, educational, and more.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">02</div>
+      <div class="step-title">Match with an Expert</div>
+      <p class="step-desc">Our smart matching system pairs you with the best-fit verified expert based on your query, availability, and language preference.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-title">Get Instant Guidance</div>
+      <p class="step-desc">Connect via live chat, voice, or video call. Receive clear, actionable guidance from your expert within minutes — anytime, anywhere.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">04</div>
+      <div class="step-title">Follow Up Freely</div>
+      <p class="step-desc">Save your session, request follow-up questions, and rate your expert. Build an ongoing relationship for continued support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-head reveal" style="text-align:center; max-width:600px; margin:0 auto 3.5rem;">
+    <span class="section-label">Testimonials</span>
+    <h2 class="section-title">Trusted by Thousands of People</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"I needed urgent legal help regarding my property dispute. DirectLink connected me with a lawyer within 5 minutes. The guidance was clear and saved me thousands in court fees."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Rahul Mehta</div>
+          <div class="testi-role">Business Owner</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"As a medical student, the access to experienced doctors for case discussions is invaluable. This platform has genuinely accelerated my learning unlike any textbook."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div>
+          <div class="testi-name">Sara Patel</div>
+          <div class="testi-role">Medical Student</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"DirectLink's financial advisors helped me restructure my investment portfolio during market volatility. My returns improved by 23% in the next quarter. Highly recommend!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Aisha Khan</div>
+          <div class="testi-role">IT Professional</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-head reveal" style="text-align:center; max-width:600px; margin:0 auto 3.5rem;">
+    <span class="section-label">Pricing Plans</span>
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <p class="section-sub" style="margin:0 auto;">Start free. Upgrade anytime. No hidden fees.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="price-plan">Starter</div>
+      <div class="price-amount">Free</div>
+      <div class="price-period">Forever free plan</div>
+      <ul class="price-features">
+        <li>3 sessions per month</li>
+        <li>Access to basic categories</li>
+        <li>Chat-based guidance</li>
+        <li>48h response time</li>
+      </ul>
+      <a href="#contact" class="btn-outline" style="display:block; text-align:center;">Get Started</a>
+    </div>
+    <div class="price-card popular reveal">
+      <div class="popular-badge">Most Popular</div>
+      <div class="price-plan">Professional</div>
+      <div class="price-amount">₹999<span style="font-size:1rem; color: var(--text-muted);">/mo</span></div>
+      <div class="price-period">Billed monthly</div>
+      <ul class="price-features">
+        <li>Unlimited sessions</li>
+        <li>All expert categories</li>
+        <li>Chat, Voice & Video calls</li>
+        <li>Priority matching (&lt;5 min)</li>
+        <li>Session recordings</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="display:block; text-align:center;">Start Free Trial</a>
+    </div>
+    <div class="price-card reveal">
+      <div class="price-plan">Enterprise</div>
+      <div class="price-amount">Custom</div>
+      <div class="price-period">For teams & institutions</div>
+      <ul class="price-features">
+        <li>Bulk user licenses</li>
+        <li>Dedicated account manager</li>
+        <li>API integration</li>
+        <li>Custom onboarding</li>
+        <li>SLA guarantee</li>
+      </ul>
+      <a href="#contact" class="btn-outline" style="display:block; text-align:center;">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="section-title">Let's Connect You<br>with the Right Expert</h2>
+      <p>Have questions about our platform? Want to become a listed expert? Reach out and our team will get back to you within 24 hours.</p>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📧</div>
+        <div>
+          <div style="font-weight:600; font-size:0.88rem;">Email Us</div>
+          <div style="color:var(--text-muted); font-size:0.82rem;">support@directlink.in</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📞</div>
+        <div>
+          <div style="font-weight:600; font-size:0.88rem;">Call Us</div>
+          <div style="color:var(--text-muted); font-size:0.82rem;">+91 98765 43210</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">🕐</div>
+        <div>
+          <div style="font-weight:600; font-size:0.88rem;">Availability</div>
+          <div style="color:var(--text-muted); font-size:0.82rem;">24/7 Platform Access</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.5rem;">Send a Message</h3>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fname" placeholder="Your full name"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="femail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label>I am a...</label>
+        <select id="ftype">
+          <option value="">Select your role</option>
+          <option>Student</option>
+          <option>Doctor / Medical Professional</option>
+          <option>Lawyer</option>
+          <option>Engineer</option>
+          <option>Business Owner</option>
+          <option>General Public</option>
+          <option>Other Professional</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="fmsg" placeholder="Tell us how we can help you..."></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%; border:none;" onclick="submitForm()">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="display:inline-flex;">
+        <div class="logo-icon">
+          <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+            <rect width="42" height="42" rx="12" fill="#0db4b9" fill-opacity="0.15"/>
+            <circle cx="21" cy="21" r="10" stroke="#0db4b9" stroke-width="2"/>
+            <path d="M16 21 L21 16 L26 21" stroke="#0db4b9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 16 L21 27" stroke="#0db4b9" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="21" cy="21" r="3" fill="#0db4b9"/>
+          </svg>
+        </div>
+        <span class="logo-text">Direct<span>Link</span></span>
+      </a>
+      <p>Bridging the gap between people who need guidance and the professionals who can provide it — instantly.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#experts">Find Experts</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Become an Expert</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#">Medical</a></li>
+        <li><a href="#">Legal</a></li>
+        <li><a href="#">Education</a></li>
+        <li><a href="#">Finance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 DirectLink. All rights reserved. Built with ♥ in India.</p>
+    <div class="social-links">
+      <a href="#" class="social-btn" title="LinkedIn">in</a>
+      <a href="#" class="social-btn" title="Twitter">𝕏</a>
+      <a href="#" class="social-btn" title="Instagram">▷</a>
+      <a href="#" class="social-btn" title="YouTube">▶</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+    ring.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+  });
+  document.querySelectorAll('a, button, .expert-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='54px'; ring.style.height='54px'; ring.style.opacity='0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.5'; });
+  });
+
+  // ── SCROLL REVEAL ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── NAVBAR SCROLL ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 60 ? 'rgba(10,22,40,0.97)' : 'rgba(10,22,40,0.85)';
+  });
+
+  // ── MOBILE MENU ──
+  function openMenu() { document.getElementById('mobileNav').classList.add('open'); }
+  function closeMenu() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // ── FORM SUBMIT ──
+  function submitForm() {
+    const name = document.getElementById('fname').value.trim();
+    const email = document.getElementById('femail').value.trim();
+    const role = document.getElementById('ftype').value;
+    const msg = document.getElementById('fmsg').value.trim();
+    if (!name || !email || !role || !msg) {
+      alert('Please fill in all fields before submitting.');
+      return;
+    }
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+    document.getElementById('fname').value = '';
+    document.getElementById('femail').value = '';
+    document.getElementById('ftype').value = '';
+    document.getElementById('fmsg').value = '';
+  }
+
+  // ── STAGGER EXPERT CARDS ──
+  document.querySelectorAll('.expert-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.07}s`;
+  });
+</script>
+</body>
+</html>
